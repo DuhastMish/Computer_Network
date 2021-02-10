@@ -1,26 +1,25 @@
-# Computer_Network
-"Computer Networks" course projects
+# Periscope system  
+The periscope system that by independent processes cooperation keeps the target under the gun  
 
-### 1. P2P_GBN_SR: Go-Back-N and Selective Repeat ARQs 
-GBN and SR ARQ point to point protocols implementation
+![***Result:***](https://github.com/LesikDee/Computer_Network/blob/master/Periscope/documentation/periscope.gif)
 
-Development info:
-* language: *python 3.7*
-* multiprocessing  library: *multiprocessing*
+## Description
+This program imitates the work of the periscope system. The system consist of a *laser installation*, a periscope (2 triangles *mirrors*), a *target*, and a *server* (*camera*).  If the target changes its position - it is needed to mirrors to rotate as that reflected ray strikes to the target. 
+For more details see [statement of the problem.](https://github.com/LesikDee/Computer_Network/blob/master/Periscope/documentation/ProblemStatement.md)
+   
+There are two input configuration models: *2d* and *3d*. They both are working in 3d space, but in *2d* at start position *laser installation*, *target* and ray are in one plane.  
 
-### 2. OSPF: Open Shortest Path First  
-OSPF implementation with GUI demonstration
+As it was required - the problem is solved by two approaches: direct and with neural nets. 
 
-Development info:
-* language: *python 3.7*
-* multiprocessing  library: *multiprocessing*
-* graphic  library: *pygame*
+## Usage 
+To start the program run scripts from root(Periscope) folder. There are two scripts: *app* and *demo*. 
+The *app* has two optional arguments:
+- '2d' or '3d' - input configuration file, '2d' by default
+- 'direct' or 'net' - the solve method, 'direct' by default  
 
-### 3. Periscope: Periscope system (laser, two mirrors, target)  
-Periscope system implementation with two different approaches (direct and with neural net)  
+For example:	`python -m src.app 3d net`  
 
-Development info:
-* language: *python 3.7*
-* multiprocessing  library: *multiprocessing*
-* graphic  libraries: *pygame*, *pyOpenGL*
-* machine learning  libraries: *tensorflow*, *keras*
+The *demo* script has no arguments, it always runs *2d* configuration with direct algorithm and besides all in one process.  
+`python -m src.demo`
+	
+To move the target use keys: *UP*, *DOWN*, *LEFT*, *RIGHT*, *NUM1*, *NUM2*.
