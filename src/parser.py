@@ -28,5 +28,19 @@ def parse(model: str) -> {}:
             Point3d(configs['up_triangle'][1][0], configs['up_triangle'][1][1], configs['up_triangle'][1][2]),
             Point3d(configs['up_triangle'][2][0], configs['up_triangle'][2][1], configs['up_triangle'][2][2]),
         ],
+        'target_triangle': [
+            Point3d(
+                configs['target_triangle'][0][0],
+                configs['target_triangle'][0][1],
+                configs['target_triangle'][0][2]),
+            Point3d(
+                configs['target_triangle'][1][0],
+                configs['target_triangle'][1][1],
+                configs['target_triangle'][1][2]),
+            Point3d(
+                configs['target_triangle'][2][0],
+                configs['target_triangle'][2][1],
+                configs['target_triangle'][2][2]),
+        ],
         "target_radius": configs["target_radius"]
     }

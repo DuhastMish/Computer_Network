@@ -1,8 +1,8 @@
 import math
 import multiprocessing as mp
 
-from src.geometry import Ray, Triangle, Point3d, Angle, Point2d, Vector2d
-from src.system.periscope import Periscope, MirrorLocation
+from src.geometry import Angle, Point2d, Point3d, Ray, Triangle, Vector2d
+from src.system.periscope import MirrorLocation, Periscope
 
 
 class DirectAlgorithm:
