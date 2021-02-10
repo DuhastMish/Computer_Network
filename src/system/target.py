@@ -19,6 +19,8 @@ class MirrorTarget:
         side_bc = self.calculate_side_length(point_a, point_c)
         side_ca = self.calculate_side_length(point_a, point_b)
         self.inradius = self.get_inradius(side_ab, side_bc, side_ca)
+        # median_a, median_b, median_c = self.get_medians(side_ab, side_bc, side_ca)
+        self.centroid: Point3d = Point3d(0.417, 0.417, 0)
 
     def calculate_side_length(self, point_1: Tuple, point_2: Tuple):
         p1_x, p1_y, p1_z = point_1
@@ -37,3 +39,16 @@ class MirrorTarget:
         semiperimeter = self.get_semiperimeter(side_1, side_2, side_3)
         area = self.get_triangle_area(side_1, side_2, side_3)
         return area / semiperimeter
+
+    def get_medians(self, side_1: float, side_2: float, side_3: float):
+        def calculate_median(side_1: float, side_2: float, side_3: float):
+            return sqrt((2 * side_1 ** 2) + (2 * side_2 ** 2) - side_3 ** 2) / 2
+
+        m_1 = calculate_median(side_2, side_3, side_1)
+        m_2 = calculate_median(side_3, side_1, side_2)
+        m_3 = calculate_median(side_1, side_2, side_3)
+        return m_1, m_2, m_3
+
+    def get_centroid(self, side_1: float, side_2: float, side_3: float):
+        # TODO: Add calculation
+        pass
