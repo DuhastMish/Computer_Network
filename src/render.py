@@ -1,7 +1,10 @@
 import pygame
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from pygame.locals import *
+from OpenGL.GL import (GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_LINES,
+                       glBegin, glClear, glColor3f, glEnd, glPopMatrix,
+                       glPushMatrix, glTranslatef, glVertex3fv)
+from OpenGL.GLU import (GLU_LINE, gluNewQuadric, gluPerspective,
+                        gluQuadricDrawStyle, gluSphere)
+from pygame.locals import DOUBLEBUF, OPENGL
 
 from src.system.periscope import Periscope
 from src.system.target import Target
@@ -12,7 +15,7 @@ BLUE = (0., 0.6, 1.)
 GREEN = (0, 240, 10)
 BLACK = (0., 0., 0.,)
 
-verticies = (
+vertices = (
     (0.02, -0.02, -0.02),
     (0.02, 0.02, -0.02),
     (-0.02, 0.02, -0.02),
@@ -24,19 +27,18 @@ verticies = (
     )
 
 edges = (
-    (0,1),
-    (0,3),
-    (0,4),
-    (2,1),
-    (2,3),
-    (2,7),
-    (6,3),
-    (6,4),
-    (6,7),
-    (5,1),
-    (5,4),
-    (5,7)
-    )
+    (0, 1),
+    (0, 3),
+    (0, 4),
+    (2, 1),
+    (2, 3),
+    (2, 7),
+    (6, 3),
+    (6, 4),
+    (6, 7),
+    (5, 1),
+    (5, 4),
+    (5, 7))
 
 
 def draw_cube(coords):
@@ -46,11 +48,12 @@ def draw_cube(coords):
     glBegin(GL_LINES)
     for edge in edges:
         for vertex in edge:
-            glVertex3fv(verticies[vertex])
+            glVertex3fv(vertices[vertex])
     glEnd()
     glPopMatrix()
 
-def draw_lines(points, closed = False, color_l = WHITE):
+
+def draw_lines(points, closed=False, color_l=WHITE):
     n = len(points)
     iters = n if closed else n - 1
     glBegin(GL_LINES)
@@ -61,7 +64,8 @@ def draw_lines(points, closed = False, color_l = WHITE):
 
     glEnd()
 
-def draw_sphere(coords, radius, color_s = BLUE):
+
+def draw_sphere(coords, radius, color_s=BLUE):
     quad: gluNewQuadric = gluNewQuadric()
     gluQuadricDrawStyle(quad, GLU_LINE)
     glColor3f(color_s[0], color_s[1], color_s[2])
@@ -71,6 +75,7 @@ def draw_sphere(coords, radius, color_s = BLUE):
 
     gluSphere(quad, radius, 12, 12)
     glPopMatrix()
+
 
 class Renderer:
     def __init__(self, periscope: Periscope = None):
@@ -89,11 +94,9 @@ class Renderer:
                 pygame.quit()
                 quit()
 
-
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.__render_geometry(p1_intersect, p2_intersect,  target, p_aim)
         pygame.display.flip()
-
 
     def __render_geometry(self, p1_intersect, p2_intersect,  target: Target, p_aim):
 
@@ -104,4 +107,3 @@ class Renderer:
         draw_sphere(target.location.get_point(), target.radius)
         draw_sphere(p_aim.get_point(), 0.004, GREEN)
         draw_cube(self.periscope.laser.startPos.get_point())
-
