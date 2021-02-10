@@ -2,6 +2,7 @@ from src.geometry import *
 from src.system.mirror import Mirror
 from src.system.target import Target
 
+
 class MirrorLocation(Enum):
     UP = 1
     DOWN = 2

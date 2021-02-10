@@ -1,8 +1,7 @@
 import pygame
-from pygame.locals import *
-
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from pygame.locals import *
 
 from src.system.periscope import Periscope
 from src.system.target import Target

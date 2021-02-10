@@ -1,9 +1,11 @@
-from src.parser import parse
-from src.system.periscope import Periscope, Target, MirrorLocation
-import random
-from src.geometry import *
-from src.render import Renderer, pygame
 import math
+import random
+
+from src.geometry import *
+from src.parser import parse
+from src.render import Renderer, pygame
+from src.system.periscope import MirrorLocation, Periscope, Target
+
 
 class Generator:
     def __init__(self, conf: str):

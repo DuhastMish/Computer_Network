@@ -1,8 +1,8 @@
 import math
+import multiprocessing as mp
 
 from src.geometry import *
 from src.system.periscope import *
-import multiprocessing as mp
 
 
 class DirectAlgorithm:

@@ -1,10 +1,12 @@
-from src.geometry import Point3d,Triangle
-from src.system.periscope import Periscope
 import pygame
+
 import src.parser as parser
-from src.render import Renderer
-from src.system.target import Target
 from src.algorithms.direct import DirectAlgorithm
+from src.geometry import Point3d, Triangle
+from src.render import Renderer
+from src.system.periscope import Periscope
+from src.system.target import Target
+
 
 def run():
     pygame.init()

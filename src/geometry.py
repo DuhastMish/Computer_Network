@@ -1,5 +1,6 @@
-from math import cos, sin, fabs, asin
 from enum import Enum
+from math import asin, cos, fabs, sin
+
 
 class Angle(Enum):
     YAW = 1

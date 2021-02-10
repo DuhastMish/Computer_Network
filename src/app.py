@@ -1,11 +1,12 @@
-from enum import Enum
-from src.render import Renderer, pygame
-from src.system.periscope import Periscope, MirrorLocation, Target
-from src.parser import parse, get_project_root
-import multiprocessing as mp
-from src.algorithms.direct import DirectAlgorithm, Triangle, Point3d
-import sys
 import datetime
+import multiprocessing as mp
+import sys
+from enum import Enum
+
+from src.algorithms.direct import DirectAlgorithm, Point3d, Triangle
+from src.parser import get_project_root, parse
+from src.render import Renderer, pygame
+from src.system.periscope import MirrorLocation, Periscope, Target
 
 
 class SolveAlgorithm(Enum):
@@ -55,6 +56,7 @@ class PeriscopeApplication:
                             args=( self.down_plane_queue, self.down_plane_points, self.periscope, MirrorLocation.DOWN))
         else:  # algorithm == SolveAlgorithm.NEURAL_NET:
             from keras.models import load_model
+
             from src.algorithms.net import NeuralNetAlgorithm
             model = load_model(str(get_project_root()) + '\\src\\neuralnet\\' + self.input_model + '_model.h5')
             self.up_plane_process: mp.Process = mp.Process(target=NeuralNetAlgorithm.run,

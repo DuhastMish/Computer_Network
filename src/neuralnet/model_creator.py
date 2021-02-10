@@ -1,6 +1,7 @@
-from numpy import loadtxt
-from keras.models import Sequential
 from keras.layers import Dense
+from keras.models import Sequential
+from numpy import loadtxt
+
 
 def build_model(model):
     data_set_file = model +'_data_set.csv'

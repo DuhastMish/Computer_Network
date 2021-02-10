@@ -1,6 +1,8 @@
 import json
-from src.geometry import Point3d, Vector
 from pathlib import Path
+
+from src.geometry import Point3d, Vector
+
 
 def get_project_root() -> Path:
     """Returns project root folder."""

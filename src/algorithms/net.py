@@ -1,9 +1,11 @@
-from src.system.periscope import Periscope, Angle
-from keras.models import load_model
-import numpy
-from src.geometry import Point3d
-from src.system.periscope import MirrorLocation
 import multiprocessing as mp
+
+import numpy
+from keras.models import load_model
+
+from src.geometry import Point3d
+from src.system.periscope import Angle, MirrorLocation, Periscope
+
 
 def add_point_to_list(str_list: [], p: Point3d):
     str_list.append(p.x)
