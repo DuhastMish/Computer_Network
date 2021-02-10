@@ -1,8 +1,8 @@
 import math
 import multiprocessing as mp
 
-from src.geometry import *
-from src.system.periscope import *
+from src.geometry import Ray, Triangle, Point3d, Angle, Point2d, Vector2d
+from src.system.periscope import Periscope, MirrorLocation
 
 
 class DirectAlgorithm:
@@ -18,7 +18,7 @@ class DirectAlgorithm:
             angle_name: Angle,
             step: int
     ):
-        angle = Periscope.EPS_ANGLE_DELTA /( 2 ** step)
+        angle = Periscope.EPS_ANGLE_DELTA / (2 ** step)
         input_ray = periscope.laser.reflect_plane(periscope.mirror_down.triangle)
 
         if mirror_loc == MirrorLocation.UP:
@@ -33,15 +33,15 @@ class DirectAlgorithm:
         plane_angle_minus: Triangle = current_plane.rotate_plane(-angle, angle_name)
 
         if mirror_loc == MirrorLocation.UP:
-            diff_angle_plus = DirectAlgorithm.final_ray_target_diff(periscope.laser, periscope.mirror_down.triangle,
-                                                                    plane_angle_plus, periscope.target.location)
-            diff_angle_minus = DirectAlgorithm.final_ray_target_diff(periscope.laser, periscope.mirror_down.triangle,
-                                                                     plane_angle_minus, periscope.target.location)
+            diff_angle_plus = DirectAlgorithm.final_ray_target_diff(
+                periscope.laser, periscope.mirror_down.triangle, plane_angle_plus, periscope.target.location)
+            diff_angle_minus = DirectAlgorithm.final_ray_target_diff(
+                periscope.laser, periscope.mirror_down.triangle, plane_angle_minus, periscope.target.location)
         else:
-            diff_angle_plus = DirectAlgorithm.final_ray_target_diff(periscope.laser, plane_angle_plus,
-                                                                    periscope.mirror_up.triangle, periscope.target.location)
-            diff_angle_minus = DirectAlgorithm.final_ray_target_diff(periscope.laser, plane_angle_minus,
-                                                                    periscope.mirror_up.triangle, periscope.target.location)
+            diff_angle_plus = DirectAlgorithm.final_ray_target_diff(
+                periscope.laser, plane_angle_plus, periscope.mirror_up.triangle, periscope.target.location)
+            diff_angle_minus = DirectAlgorithm.final_ray_target_diff(
+                periscope.laser, plane_angle_minus, periscope.mirror_up.triangle, periscope.target.location)
 
         if math.fabs(diff_angle_plus - diff_angle_minus) < 1e-5:
             return
@@ -61,7 +61,7 @@ class DirectAlgorithm:
         else:
             ray = periscope.laser.reflect_plane(plane_angle_step)
             if not DirectAlgorithm.__check_rotate_relevant(ray, periscope.mirror_up.triangle):
-                return #current_plane.rotate_plane(angle * -angle_sign, angle_name)
+                return
             if not DirectAlgorithm.__check_rotate_relevant(periscope.laser, plane_angle_step):
                 return
 
@@ -69,7 +69,8 @@ class DirectAlgorithm:
         angle_step = 1
         while diff < prev_diff:
             angle_step += 1
-            new_plane_angle_step: Triangle = current_plane.rotate_plane(angle * angle_step * angle_sign, angle_name)
+            new_plane_angle_step: Triangle = current_plane.rotate_plane(
+                angle * angle_step * angle_sign, angle_name)
             prev_diff = diff
 
             if mirror_loc == MirrorLocation.UP:
@@ -78,22 +79,20 @@ class DirectAlgorithm:
             else:
                 ray = periscope.laser.reflect_plane(new_plane_angle_step)
                 if not DirectAlgorithm.__check_rotate_relevant(ray, periscope.mirror_up.triangle):
-                    return #current_plane.rotate_plane(angle * -angle_sign, angle_name)
+                    return
                 if not DirectAlgorithm.__check_rotate_relevant(periscope.laser, new_plane_angle_step):
                     return
-
 
             plane_angle_step = new_plane_angle_step
 
             if mirror_loc == MirrorLocation.UP:
-                diff = DirectAlgorithm.final_ray_target_diff(periscope.laser, periscope.mirror_down.triangle,
-                                                             plane_angle_step, periscope.target.location)
+                diff = DirectAlgorithm.final_ray_target_diff(
+                    periscope.laser, periscope.mirror_down.triangle, plane_angle_step, periscope.target.location)
             else:
-                diff = DirectAlgorithm.final_ray_target_diff(periscope.laser, plane_angle_step,
-                                                             periscope.mirror_up.triangle, periscope.target.location)
+                diff = DirectAlgorithm.final_ray_target_diff(
+                    periscope.laser, plane_angle_step, periscope.mirror_up.triangle, periscope.target.location)
 
         return plane_angle_step
-
 
     # if point (on ray and plane) is in triangle
     @staticmethod
@@ -105,12 +104,12 @@ class DirectAlgorithm:
         xz_k = Point2d(point_plane_intersect.x, point_plane_intersect.z)
 
         is_relevant = True
-        is_relevant *= DirectAlgorithm.__on_one_side_of_the_plane(Vector2d(xz_b, xz_a), Vector2d(xz_c, xz_a),
-                                                            Vector2d(xz_k, xz_a))
-        is_relevant *= DirectAlgorithm.__on_one_side_of_the_plane(Vector2d(xz_c, xz_a), Vector2d(xz_b, xz_a),
-                                                            Vector2d(xz_k, xz_a))
-        is_relevant *= DirectAlgorithm.__on_one_side_of_the_plane(Vector2d(xz_b, xz_c), Vector2d(xz_a, xz_c),
-                                                            Vector2d(xz_k, xz_c))
+        is_relevant *= DirectAlgorithm.__on_one_side_of_the_plane(
+            Vector2d(xz_b, xz_a), Vector2d(xz_c, xz_a), Vector2d(xz_k, xz_a))
+        is_relevant *= DirectAlgorithm.__on_one_side_of_the_plane(
+            Vector2d(xz_c, xz_a), Vector2d(xz_b, xz_a), Vector2d(xz_k, xz_a))
+        is_relevant *= DirectAlgorithm.__on_one_side_of_the_plane(
+            Vector2d(xz_b, xz_c), Vector2d(xz_a, xz_c), Vector2d(xz_k, xz_c))
         return is_relevant
 
     @staticmethod
@@ -154,8 +153,9 @@ class DirectAlgorithm:
             DirectAlgorithm.correct_one_plane(periscope, second_loc_plane, Angle.ROLL, step)
             DirectAlgorithm.correct_one_plane(periscope, second_loc_plane, Angle.PITCH, step)
 
-            diff = DirectAlgorithm.final_ray_target_diff(periscope.laser, periscope.mirror_down.triangle,
-                                              periscope.mirror_up.triangle, periscope.target.location)
+            diff = DirectAlgorithm.final_ray_target_diff(
+                periscope.laser, periscope.mirror_down.triangle,
+                periscope.mirror_up.triangle, periscope.target.location)
             step += 1
 
     @staticmethod
@@ -182,8 +182,9 @@ class DirectAlgorithm:
                 DirectAlgorithm.correct_one_plane(periscope, second_loc_plane, Angle.ROLL, step)
                 DirectAlgorithm.correct_one_plane(periscope, second_loc_plane, Angle.PITCH, step)
 
-                diff = DirectAlgorithm.final_ray_target_diff(periscope.laser, periscope.mirror_down.triangle,
-                                                             periscope.mirror_up.triangle, periscope.target.location)
+                diff = DirectAlgorithm.final_ray_target_diff(
+                    periscope.laser, periscope.mirror_down.triangle,
+                    periscope.mirror_up.triangle, periscope.target.location)
                 step += 1
 
             self_plane = periscope.mirror_down.triangle

@@ -22,6 +22,7 @@ class Vector2d:
     def pseudo_scalar_prod(self, other: 'Vector2d') -> float:
         return self.x * other.y - other.x * self.y
 
+
 class Point3d:
     def __init__(self, x: float = 0, y: float = 0, z: float = 0):
         self.x: float = x
@@ -43,7 +44,7 @@ class Point3d:
         return d
 
     def distance_to_point(self, other: 'Point3d') -> float:
-       return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2) ** 0.5
+        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2) ** 0.5
 
     def distance_to_line(self, point1: 'Point3d', point2: 'Point3d'):
         square = fabs(Vector(point2, point1).vector_prod(Vector(self, point1)).length())
@@ -51,6 +52,7 @@ class Point3d:
 
     def get_point(self):
         return self.x, self.y, self.z
+
 
 class Vector:
     def __init__(self, point_end: Point3d, point_start: Point3d = Point3d(0, 0, 0)):
@@ -101,13 +103,14 @@ class Vector:
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
 
     def rotate(self, m: []):
-        x = self.x * m[0][0] +  self.y * m[0][1] + self.z * m[0][2]
+        x = self.x * m[0][0] + self.y * m[0][1] + self.z * m[0][2]
         y = self.x * m[1][0] + self.y * m[1][1] + self.z * m[1][2]
-        z = self.x * m[2][0] +  self.y * m[2][1] + self.z * m[2][2]
+        z = self.x * m[2][0] + self.y * m[2][1] + self.z * m[2][2]
 
         self.x = x
         self.y = y
         self.z = z
+
 
 class Plane:  # A * x + B * y + C * z + d = 0
     def __init__(self, a: float, b: float, c: float, d: float):
@@ -122,6 +125,7 @@ class Plane:  # A * x + B * y + C * z + d = 0
     def point_projection(self, m: Point3d) -> Point3d:
         t = -(self.a * m.x + self.b * m.y + self.c * m.z + self.d) / (self.a ** 2 + self.b ** 2 + self.c ** 2)
         return Point3d(self.a * t + m.x, self.b * t + m.y, self.c * t + m.z)
+
 
 class Triangle(Plane):
     def __init__(self, point_a, point_b, point_c):
@@ -200,6 +204,8 @@ class Triangle(Plane):
             z = x.vector_prod(y)
             z.normalize()
             return z
+
+
 class Ray:
     def __init__(self, location: Point3d,  direction: Vector):
         self.startPos: Point3d = location
@@ -215,11 +221,11 @@ class Ray:
         # distance from X to plane
         d = n.scalar_prod(v)  # d = N * V
         # dir projection to N
-        e = n.scalar_prod(self.dir)  #  e = N * (Y - X)
+        e = n.scalar_prod(self.dir)  # e = N * (Y - X)
 
         if e == 0:
             raise ValueError()
-            #return self.startPos
+            # return self.startPos
 
         return self.startPos + (self.dir * d / e)
 

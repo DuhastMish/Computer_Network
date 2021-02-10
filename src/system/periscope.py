@@ -1,4 +1,6 @@
-from src.geometry import *
+from enum import Enum
+
+from src.geometry import Ray, Triangle
 from src.system.mirror import Mirror
 from src.system.target import Target
 
@@ -6,6 +8,7 @@ from src.system.target import Target
 class MirrorLocation(Enum):
     UP = 1
     DOWN = 2
+
 
 class Periscope:
 
@@ -25,5 +28,3 @@ class Periscope:
 
     def ray_to_aim(self) -> Ray:
         return self.laser.reflect_plane(self.mirror_down.triangle).reflect_plane(self.mirror_up.triangle)
-
-

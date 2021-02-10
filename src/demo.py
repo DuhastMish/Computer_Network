@@ -24,7 +24,8 @@ def run():
     iteration = 0
     while True:
         for i in pygame.event.get():
-            if i.type == pygame.QUIT: exit()
+            if i.type == pygame.QUIT:
+                exit()
             elif i.type == pygame.KEYDOWN:
                 if i.key == pygame.K_UP:
                     tee.location.y += 0.01
@@ -45,8 +46,8 @@ def run():
         mirror_up = periscope.mirror_up
         p1_intersect = periscope.laser.intersect_plane(mirror_down.triangle)
         p2_intersect = periscope.laser.reflect_plane(mirror_down.triangle).intersect_plane(mirror_up.triangle)
-        p_aim = periscope.ray_to_aim().intersect_plane(
-            Triangle(Point3d(tee.location.x, 0.5, 0.2),
+        p_aim = periscope.ray_to_aim().intersect_plane(Triangle(
+            Point3d(tee.location.x, 0.5, 0.2),
             Point3d(tee.location.x, 0.4, 0.1),
             Point3d(tee.location.x, 0.3, 0.5)
         ))
@@ -54,7 +55,6 @@ def run():
         renderer.render(p1_intersect, p2_intersect, tee, p_aim)
         pygame.time.delay(10)
 
+
 if __name__ == '__main__':
     run()
-
-
